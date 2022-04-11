@@ -18,12 +18,15 @@ form.addEventListener('submit', function(e) {
 });
 
 socket.on('chat message', function(msg) {
-  var nuevo=document.createElement("div");
-  nuevo.classList= String(soy)===String(msg[0])?("col-auto offset-6 alert alert-info rounded-pill text-end"):("col-6 alert alert-success rounded-pill text-start");    
-  nuevo.textContent = String(soy)===String(msg[0])?(msg[1]):(msg[0]+": "+msg[1]);  
-  padre.appendChild(nuevo)
-  window.scrollTo(0, document.body.scrollHeight);
-  console.log(padre)
+    var nuevo=document.createElement("div");
+    nuevo.classList= String(soy)===String(msg[0])?("col-auto offset-6 alert alert-info rounded-pill text-end"):("col-6 alert alert-success rounded-pill text-start");    
+    nuevo.textContent = String(soy)===String(msg[0])?(msg[1]):(msg[0]+": "+msg[1]);  
+    padre.appendChild(nuevo)
+    window.scrollTo(0, document.body.scrollHeight);
+
+}); 
+socket.on('Reset', function(msg) {
+    padre.innerHTML = '';
 }); 
 //Get name
 function getUser(){

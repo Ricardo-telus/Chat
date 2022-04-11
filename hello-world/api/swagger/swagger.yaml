@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: Chat
 # during dev, should point to your local machine
 host: localhost:3000
 # basePath prefixes all resource paths 
@@ -20,11 +20,59 @@ produces:
 paths:
   /user:
     # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+    x-swagger-router-controller: Users
     get:
-      description: Returns 'Hello' to the caller
+      description: Returns 'All Users' to the caller
       # used as the method name of the controller
-      operationId: hello
+      operationId: getUser
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /messages:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: Messages
+    get:
+      description: Returns 'All Users' to the caller
+      # used as the method name of the controller
+      operationId: getMessages
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /deleteAll:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: Delete
+    delete:
+      description: Delete all Messages
+      # used as the method name of the controller
+      operationId: deleteMessages
       parameters:
         - name: name
           in: query
