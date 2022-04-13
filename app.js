@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+const swaggerUI=require("swagger-ui-express")
+const YAML=require("yamljs")
+const swaggerJsDocs=YAML.load('./api.yaml')
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -17,7 +20,7 @@ const { use } = require("express/lib/application");
 app.use(bodyParser.json()); // for parsing application/json
 // Templating engine setup
 app.set("view engine", "ejs");
-
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerJsDocs))
 // Enpoints
 app.get("/", (req, res) => {
   res.render("index");
@@ -84,16 +87,11 @@ app.put("/user", (req, res) => {
       console.log('user disconnected, total of current user are:'+(total-=1));
     });
   });
-/*   io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      console.log('message: ' + msg);
-    });
-  }); */
   io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' }); // This will emit the event to all connected sockets
   io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
       mess.push({user:findUser(socket.id), message:msg})
-      console.log({user:findUser(socket.id), message:msg})
+      //console.log({user:findUser(socket.id), message:msg})
       io.emit('chat message', [findUser(socket.id),msg]);
     });
   });
@@ -117,6 +115,7 @@ app.put("/user", (req, res) => {
     return estado
   }
 function deleteAll(){
+  mess=[]
       io.emit('Reset', ['Father','Reset']);
 }
 
